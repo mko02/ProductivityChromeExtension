@@ -1,5 +1,5 @@
 chrome.tabs.onActivated.addListener((tabId, tab) => {
-  console.log("Tab updated: ", tab);
+  console.log("Tab updated: ");
 
   // await for response for getCurrentTab
   getCurrentTab().then((url) => {
@@ -12,7 +12,6 @@ chrome.tabs.onActivated.addListener((tabId, tab) => {
   });
 });
 
-// from chrome API documentation
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
