@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getCurrentDomain } from "./utils";
 import DomainItem from "./DomainItem";
 import { time } from "console";
+import { start } from "repl";
 
 function App() {
 	const [keys, setKeys] = useState<string[]>([]);
@@ -12,15 +13,16 @@ function App() {
 	const [activeTimeStorage, setActiveTimeStorage] = useState<{
 		[key: string]: any;
 	}>({});
+	const [domainTimeStorage, setDomainTimeStorage] = useState<{
+		[key: string]: any;
+	}>({});
+
 	const [iconStorage, setIconStorage] = useState<{ [key: string]: any }>({});
 	const [currentActiveDomain, setCurrentActiveDomain] = useState<string | null>(
 		null
 	);
 	const [currentActiveDomainTime, setCurrentActiveDomainTime] =
 		useState<number>(0);
-	const [currentActiveDomainIcon, setCurrentActiveDomainIcon] = useState<
-		string | null
-	>(null);
 	const [startTimer, setStartTimer] = useState<boolean>(false);
 	const [maxTime, setMaxTime] = useState<number>(0);
 
@@ -32,46 +34,53 @@ function App() {
 
 	useEffect(() => {
 		chrome.storage.local.get(null, (data) => {
-			var dataKeys = Object.keys(data);
-			console.log(dataKeys);
+			var tabFocusEvents = data?.tabFocusEvents;
+			console.log(tabFocusEvents);
 
-			// filter out keys that are not domain names
-			dataKeys = dataKeys.filter((key) => {
-				const item = JSON.parse(data[key]);
-				return item?.type === "domain";
+			var keys = Object.keys(tabFocusEvents);
+			var currentMaxTime = 0;
+
+			keys.forEach((domain: string) => {
+				var events = tabFocusEvents[domain]["events"];
+				var totalActiveTime = 0;
+
+				events.forEach((event: any) => {
+					var startTime = new Date(event["focusStart"]);
+					var endTime = new Date(event["focusEnd"]);
+					const duration = (endTime.getTime() - startTime.getTime()) / 1000; // Difference in milliseconds
+					if (duration > 0) {
+						console.log(domain, startTime, endTime, duration);
+						totalActiveTime += duration;
+					}
+				});
+
+				var iconUrl = tabFocusEvents[domain]["icon"];
+
+				if (iconUrl === undefined || iconUrl === "") {
+					iconUrl = "https://www.google.com/favicon.ico";
+				}
+
+				console.log(domain, totalActiveTime, iconUrl);
+
+				var item = {
+					totalDomainTime: totalActiveTime,
+					icon: iconUrl,
+				};
+
+				currentMaxTime = Math.max(currentMaxTime, totalActiveTime);
+
+				setDomainTimeStorage((prevState) => ({
+					...prevState,
+					[domain]: item,
+				}));
+
+				if (domain === currentActiveDomain) {
+					setCurrentActiveDomainTime(totalActiveTime);
+				}
 			});
 
-			setDomainStorage(data);
-			setKeys(dataKeys);
-			var tempMaxTime = 0;
-
-			dataKeys.forEach((key) => {
-				const item = JSON.parse(data[key]);
-				const totalActiveTime = item?.totalDomainTime;
-				const icons = item?.icon;
-				const roundedTotalActiveTime = Math.round(totalActiveTime);
-
-				if (key === currentActiveDomain) {
-					setCurrentActiveDomainTime(roundedTotalActiveTime);
-					setCurrentActiveDomainIcon(icons);
-				}
-				if (roundedTotalActiveTime) {
-					// save active time rounded to ones
-					setActiveTimeStorage((prevState) => ({
-						...prevState,
-						[key]: roundedTotalActiveTime,
-					}));
-				}
-				if (icons) {
-					setIconStorage((prevState) => ({
-						...prevState,
-						[key]: icons,
-					}));
-				}
-				tempMaxTime = Math.max(tempMaxTime, roundedTotalActiveTime);
-			});
-			setMaxTime(tempMaxTime);
 			setStartTimer(true);
+			setMaxTime(currentMaxTime);
 		});
 	}, [currentActiveDomain]);
 
@@ -91,20 +100,18 @@ function App() {
 	}, [startTimer]);
 
 	const displayStorage = () => {
-		const data = keys
-			.map((key) => {
-				if (key === currentActiveDomain || key === "undefined") return null;
-				return {
-					name: key,
-					time: activeTimeStorage[key] || 0, // set as int
-					icon: iconStorage[key] || "",
-				};
-			})
-			.filter(
-				(item): item is { name: string; time: number; icon: string } =>
-					item !== null && item.time > 60
+		const filteredDomains = Object.fromEntries(
+			Object.entries(domainTimeStorage).filter(
+				([domain, item]) =>
+					item.totalDomainTime > 0 &&
+					domain !== currentActiveDomain &&
+					domain != ""
 			)
-			.sort((a, b) => b.time - a.time);
+		);
+
+		const sortedDomains = Object.entries(filteredDomains).sort(
+			(a, b) => b[1].totalDomainTime - a[1].totalDomainTime
+		);
 
 		return (
 			<div>
@@ -113,13 +120,13 @@ function App() {
 					totalTime={currentActiveDomainTime}
 					maxTime={maxTime}
 					isCurrent={true}
-					icon={currentActiveDomainIcon || ""}
+					icon={domainTimeStorage[currentActiveDomain || ""]?.icon}
 				/>
 				{/* display only top 5 */}
-				{data.slice(0, 5).map((item) => (
+				{sortedDomains.slice(0, 5).map(([domain, item]) => (
 					<DomainItem
-						domain={item.name}
-						totalTime={item.time}
+						domain={domain}
+						totalTime={item.totalDomainTime}
 						maxTime={maxTime}
 						isCurrent={false}
 						icon={item.icon}
@@ -161,7 +168,7 @@ function App() {
 					}}
 					onClick={() =>
 						chrome.tabs.create(
-							{ url: chrome.runtime.getURL("js/redirect.html") } // This opens NewFile.html in a new tab
+							{ url: chrome.runtime.getURL("localhostTab.html") } // This opens NewFile.html in a new tab
 						)
 					}
 				>

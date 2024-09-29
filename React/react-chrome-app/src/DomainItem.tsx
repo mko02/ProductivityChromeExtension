@@ -1,4 +1,4 @@
-import { formatTimeMinutes } from "./utils";
+import { formatTimeMinutes, formatTime } from "./utils";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
 function DomainItem({
@@ -58,6 +58,10 @@ function DomainItem({
 		transition: "width 0.6s ease", // Smooth transition for width change
 	} as React.CSSProperties;
 
+	if (domain === "extensions") {
+		icon = "https://www.google.com/favicon.ico";
+	}
+
 	return (
 		<div>
 			<div
@@ -107,7 +111,7 @@ function DomainItem({
 						<div style={progressBarStyle}></div>
 					</div>
 				)}
-				<span>{formatTimeMinutes(totalTime)}</span>
+				<span>{formatTime(totalTime)}</span>
 			</div>
 		</div>
 	);

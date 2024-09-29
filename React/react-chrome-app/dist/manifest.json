@@ -14,16 +14,6 @@
     "background": {
         "service_worker": "background.js"
     },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "contentScript.js"
-            ]
-        }
-    ],
     "web_accessible_resources": [
         {
             "resources": [
@@ -31,7 +21,10 @@
                 "assets/play.png",
                 "assets/delete.png",
                 "assets/save.png",
-                "js/redirect.html"
+                "js/redirect.html",
+                "localhostTab.html",
+                "lib/chart.umd.js",
+                "lib/index.global.min.js"
             ],
             "matches": [
                 "<all_urls>"
