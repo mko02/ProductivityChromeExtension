@@ -181,27 +181,19 @@ function lostFocus(domain) {
 					const focusEnd = new Date(lastEvent.focusEnd);
 					const durationSeconds = focusEnd - focusStart;
 					// change this if needed
-					if (durationSeconds >= 1) {
-						chrome.storage.local.set(
-							{ tabFocusEvents: tabFocusEvents },
-							function () {
-								console.log(
-									"Tab lost focus for domain:",
-									domain,
-									lastEvent,
-									"Duration (seconds):",
-									durationSeconds
-								);
-								resolve();
-							}
-						);
-					} else {
-						console.log(
-							"Event discarded. Duration (seconds):",
-							durationSeconds
-						);
-						resolve();
-					}
+					chrome.storage.local.set(
+						{ tabFocusEvents: tabFocusEvents },
+						function () {
+							console.log(
+								"Tab lost focus for domain:",
+								domain,
+								lastEvent,
+								"Duration (seconds):",
+								durationSeconds
+							);
+							resolve();
+						}
+					);
 				} else {
 					resolve();
 				}

@@ -35,7 +35,6 @@ function App() {
 	useEffect(() => {
 		chrome.storage.local.get(null, (data) => {
 			var tabFocusEvents = data?.tabFocusEvents;
-			console.log(tabFocusEvents);
 
 			var keys = Object.keys(tabFocusEvents);
 			var currentMaxTime = 0;
@@ -49,7 +48,6 @@ function App() {
 					var endTime = new Date(event["focusEnd"]);
 					const duration = (endTime.getTime() - startTime.getTime()) / 1000; // Difference in milliseconds
 					if (duration > 0) {
-						console.log(domain, startTime, endTime, duration);
 						totalActiveTime += duration;
 					}
 				});
@@ -59,8 +57,6 @@ function App() {
 				if (iconUrl === undefined || iconUrl === "") {
 					iconUrl = "https://www.google.com/favicon.ico";
 				}
-
-				console.log(domain, totalActiveTime, iconUrl);
 
 				var item = {
 					totalDomainTime: totalActiveTime,
