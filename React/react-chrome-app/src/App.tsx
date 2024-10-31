@@ -1,28 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { getCurrentDomain } from "./utils";
 import DomainItem from "./DomainItem";
-import { time } from "console";
-import { start } from "repl";
 
 function App() {
-	const [keys, setKeys] = useState<string[]>([]);
-	const [domainStorage, setDomainStorage] = useState<{ [key: string]: any }>(
-		{}
-	);
-	const [activeTimeStorage, setActiveTimeStorage] = useState<{
-		[key: string]: any;
-	}>({});
 	const [domainTimeStorage, setDomainTimeStorage] = useState<{
 		[key: string]: any;
 	}>({});
-
-	const [iconStorage, setIconStorage] = useState<{ [key: string]: any }>({});
 	const [currentActiveDomain, setCurrentActiveDomain] = useState<string | null>(
 		null
 	);
 	const [currentActiveDomainTime, setCurrentActiveDomainTime] =
 		useState<number>(0);
+
 	const [startTimer, setStartTimer] = useState<boolean>(false);
 	const [maxTime, setMaxTime] = useState<number>(0);
 
@@ -35,21 +25,26 @@ function App() {
 	useEffect(() => {
 		chrome.storage.local.get(null, (data) => {
 			var tabFocusEvents = data?.tabFocusEvents;
-
 			var keys = Object.keys(tabFocusEvents);
 			var currentMaxTime = 0;
 
 			keys.forEach((domain: string) => {
 				var events = tabFocusEvents[domain]["events"];
 				var totalActiveTime = 0;
+				var prevTimeStamp = null as Date | null;
 
 				events.forEach((event: any) => {
-					var startTime = new Date(event["focusStart"]);
-					var endTime = new Date(event["focusEnd"]);
-					const duration = (endTime.getTime() - startTime.getTime()) / 1000; // Difference in milliseconds
-					if (duration > 0) {
-						totalActiveTime += duration;
+					var timeStamp = new Date(event["timeStamp"]);
+
+					if (prevTimeStamp !== null) {
+						const duration =
+							(timeStamp.getTime() - prevTimeStamp.getTime()) / 1000; // Difference in milliseconds
+						if (duration > 0) {
+							totalActiveTime += duration;
+						}
+						prevTimeStamp = null as Date | null;
 					}
+					prevTimeStamp = timeStamp;
 				});
 
 				var iconUrl = tabFocusEvents[domain]["icon"];
@@ -80,7 +75,7 @@ function App() {
 		});
 	}, [currentActiveDomain]);
 
-	// do every second
+	// trigger every second
 	useEffect(() => {
 		if (!startTimer) return; // do not increment if active tab is not set
 

@@ -1,213 +1,214 @@
-// chrome.tabs.onActivated.addListener((tabId, tab) => {
-// 	console.log("Tab updated: ");
+let activeTab = null;
+let activeWindowID = null;
 
-// 	// await for response for getCurrentTab
-// 	getCurrentTab().then((currentTab) => {
-// 		//unpack
-// 		let url = currentTab.url;
-// 		let icon = currentTab.icon;
-// 		let domain = new URL(url).hostname;
+let storageLock = false;
+let storageQueue = [];
 
-// 		console.log("Url: ", url);
-// 		console.log("Domain: ", domain);
-
-// 		// send message to contentScript.js
-// 		chrome.tabs.sendMessage(
-// 			tabId.tabId,
-// 			{
-// 				url: url,
-// 				domain: domain,
-// 				icon: icon,
-// 			},
-// 			(response) => {
-// 				console.log("response: ", response);
-// 			}
-// 		);
-// 	});
-// });
-
-// async function getCurrentTab() {
-// 	let queryOptions = { active: true, lastFocusedWindow: true };
-
-// 	// `tab` will either be a `tabs.Tab` instance or `undefined`.
-// 	let [tab] = await chrome.tabs.query(queryOptions);
-// 	return {
-// 		url: tab.url,
-// 		icon: tab.favIconUrl,
-// 	};
-// }
-
-let activeTabId = null;
-let activeDomain = null;
-let activeUrl = null;
-
+// handling tab switches within the same window
 chrome.tabs.onActivated.addListener(function (activeInfo) {
-	const currTime = new Date().toISOString();
+	// Since previous activeDomain exists, we need to create lostFocus event
+	if (activeTab !== null) {
+		const currTime = new Date().toISOString();
+		const activeDomain = getDomainFromUrl(activeTab.url);
+		const activeUrl = activeTab.url;
+		const activeIcon = activeTab.favIconUrl;
 
+		storageQueue.push({
+			domain: activeDomain,
+			url: activeUrl,
+			currTime: currTime,
+			focusType: "active_off",
+			icon: activeIcon,
+			callback: function () {},
+		});
+
+		activeTab = null;
+	}
+
+	// get the information of the newly activated tab
 	chrome.tabs.get(activeInfo.tabId, function (tab) {
+		const currTime = new Date().toISOString();
 		const domain = getDomainFromUrl(tab.url);
 		const url = tab.url;
 		const icon = tab.favIconUrl;
 
-		if (
-			domain != "extensions" &&
-			domain != null &&
-			domain != "mlgpaokmkbpbhmdebjfajahjfbefbkog"
-		) {
-			if (activeDomain) {
-				lostFocus(activeDomain, activeUrl).then(function () {
-					// Proceed after lostFocus has completed
-					createFocusEvent(domain, url, currTime, icon, function () {
-						activeTabId = activeInfo.tabId;
-						activeDomain = domain;
-						activeUrl = url;
-					});
-				});
-			} else {
-				// No previous activeDomain, proceed to create focusEvent
-				createFocusEvent(domain, url, currTime, icon, function () {
-					activeTabId = activeInfo.tabId;
-					activeDomain = domain;
-					activeUrl = url;
-				});
-			}
-		} else {
-			// Domain is to be ignored
-			if (activeDomain) {
-				lostFocus(activeDomain, activeUrl).then(function () {
-					activeTabId = null;
-					activeDomain = null;
-					activeUrl = null;
-				});
-			} else {
-				activeTabId = null;
-				activeDomain = null;
-				activeUrl = null;
-			}
+		// ensure we are not saving the extension, new tab, or chrome:// urls
+		if (isValidDomain(domain) && isValidUrl(url)) {
+			// create focus event for current tab
+			storageQueue.push({
+				domain: domain,
+				url: url,
+				currTime: currTime,
+				focusType: "active_on",
+				icon: icon,
+				callback: function () {},
+			});
+
+			activeTab = tab;
+		}
+
+		if (!storageLock) {
+			processStorageQueue();
 		}
 	});
 });
 
+// window switches
 chrome.windows.onFocusChanged.addListener(function (windowId) {
-	if (windowId === chrome.windows.WINDOW_ID_NONE && activeDomain) {
-		lostFocus(activeDomain, activeUrl).then(function () {
-			activeDomain = null;
-			activeTabId = null;
-			activeUrl = null;
+	if (activeTab !== null) {
+		const currTime = new Date().toISOString();
+		const activeDomain = getDomainFromUrl(activeTab.url);
+		const activeUrl = activeTab.url;
+		const activeIcon = activeTab.favIconUrl;
+
+		// switching window causes previous tab to lose focus
+		storageQueue.push({
+			domain: activeDomain,
+			url: activeUrl,
+			currTime: currTime,
+			focusType: "windoe_off",
+			icon: activeIcon,
+			callback: function () {},
 		});
-	} else if (windowId !== chrome.windows.WINDOW_ID_NONE) {
-		// Window has gained focus, we may need to restore activeDomain and activeUrl
+
+		activeTab = null;
+
+		if (!storageLock) {
+			processStorageQueue();
+		}
+	}
+
+	// change focus from one window to another
+	if (windowId !== chrome.windows.WINDOW_ID_NONE) {
+		// get the current window active tab
 		chrome.windows.get(windowId, { populate: true }, function (window) {
 			if (window.focused) {
-				const activeTab = window.tabs.find((tab) => tab.active);
+				activeTab = window.tabs.find((tab) => tab.active);
+
 				if (activeTab) {
 					const domain = getDomainFromUrl(activeTab.url);
 					const url = activeTab.url;
 					const currTime = new Date().toISOString();
 					const icon = activeTab.favIconUrl;
 
-					if (
-						domain != "extensions" &&
-						domain != null &&
-						domain != "mlgpaokmkbpbhmdebjfajahjfbefbkog"
-					) {
-						createFocusEvent(domain, url, currTime, icon, function () {
-							activeTabId = activeTab.id;
-							activeDomain = domain;
-							activeUrl = url;
+					if (isValidDomain(domain) && isValidUrl(url)) {
+						storageQueue.push({
+							domain: domain,
+							url: url,
+							currTime: currTime,
+							focusType: "window_on",
+							icon: icon,
+							callback: function () {},
 						});
 					} else {
-						activeTabId = null;
-						activeDomain = null;
-						activeUrl = null;
+						activeTab = null;
 					}
 				}
 			}
+
+			if (!storageLock) {
+				processStorageQueue();
+			}
 		});
 	}
+
+	activeWindowID = windowId;
 });
 
 chrome.tabs.onRemoved.addListener(function (tabId) {
+	const currTime = new Date().toISOString();
+	const activeDomain = getDomainFromUrl(activeTab.url);
+	const activeUrl = activeTab.url;
+	const activeIcon = activeTab.favIconUrl;
+	const activeTabId = activeTab.id;
+
 	if (tabId === activeTabId && activeDomain) {
-		lostFocus(activeDomain, activeUrl).then(function () {
-			activeDomain = null;
-			activeTabId = null;
-			activeUrl = null;
+		storageQueue.push({
+			domain: activeDomain,
+			url: activeUrl,
+			currTime: currTime,
+			focusType: "remove_off",
+			icon: activeIcon,
+			callback: function () {},
 		});
+
+		activeTab = null;
+
+		if (!storageLock) {
+			processStorageQueue();
+		}
 	}
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-	if (tabId === activeTabId && changeInfo.url) {
-		const currTime = new Date().toISOString();
+	// ensure the tab is fully loaded
+	if (changeInfo.status !== "complete") {
+		return;
+	}
 
-		lostFocus(activeDomain, activeUrl).then(function () {
-			const domain = getDomainFromUrl(changeInfo.url);
-			const url = changeInfo.url;
-			const icon = tab.favIconUrl;
+	const currTime = new Date().toISOString();
 
-			if (
-				domain != "extensions" &&
-				domain != null &&
-				domain != "mlgpaokmkbpbhmdebjfajahjfbefbkog"
-			) {
-				createFocusEvent(domain, url, currTime, icon, function () {
-					activeDomain = domain;
-					activeUrl = url;
-				});
-			} else {
-				activeDomain = null;
-				activeUrl = null;
-			}
+	if (activeTab !== null) {
+		const activeDomain = getDomainFromUrl(activeTab.url);
+		const activeUrl = activeTab.url;
+		const activeIcon = activeTab.favIconUrl;
+		const activeTabId = activeTab.id;
+
+		storageQueue.push({
+			domain: activeDomain,
+			url: activeUrl,
+			currTime: currTime,
+			focusType: "update_off",
+			icon: activeIcon,
+			callback: function () {},
 		});
+
+		activeTab = null;
+	}
+
+	const domain = getDomainFromUrl(tab.url);
+	const url = tab.url;
+	const icon = tab.favIconUrl;
+
+	// ensure we are not saving the extension, new tab, or chrome:// urls
+	if (isValidDomain(domain) && isValidUrl(url)) {
+		// create focus event for current tab
+		storageQueue.push({
+			domain: domain,
+			url: url,
+			currTime: currTime,
+			focusType: "update_on",
+			icon: icon,
+		});
+
+		activeTab = tab;
+	}
+
+	if (!storageLock) {
+		processStorageQueue();
 	}
 });
 
-function lostFocus(domain) {
-	return new Promise(function (resolve, reject) {
-		const currentTime = new Date().toISOString();
+function processStorageQueue() {
+	if (storageQueue.length == 0) {
+		storageLock = false;
+		return;
+	}
 
-		chrome.storage.local.get(["tabFocusEvents"], function (result) {
-			const tabFocusEvents = result.tabFocusEvents || {};
+	storageLock = true;
+	const { domain, url, currTime, focusType, icon, callback } =
+		storageQueue.shift();
 
-			if (tabFocusEvents[domain] && tabFocusEvents[domain].events.length > 0) {
-				const events = tabFocusEvents[domain].events;
-
-				const lastEvent = events[events.length - 1];
-				if (lastEvent && !lastEvent.focusEnd) {
-					lastEvent.focusEnd = currentTime;
-
-					const focusStart = new Date(lastEvent.focusStart);
-					const focusEnd = new Date(lastEvent.focusEnd);
-					const durationSeconds = focusEnd - focusStart;
-					// change this if needed
-					chrome.storage.local.set(
-						{ tabFocusEvents: tabFocusEvents },
-						function () {
-							console.log(
-								"Tab lost focus for domain:",
-								domain,
-								lastEvent,
-								"Duration (seconds):",
-								durationSeconds
-							);
-							resolve();
-						}
-					);
-				} else {
-					resolve();
-				}
-			} else {
-				resolve();
-			}
-		});
+	createFocusEvent(domain, url, currTime, focusType, icon, function () {
+		if (callback) callback();
+		processStorageQueue();
 	});
 }
 
-function createFocusEvent(domain, url, currTime, iconURL, callback) {
+function createFocusEvent(domain, url, currTime, focusType, iconURL, callback) {
 	const focusEvent = {
-		focusStart: currTime,
-		focusEnd: null,
+		timeStamp: currTime,
+		focusType: focusType,
 		url: url,
 	};
 
@@ -225,7 +226,7 @@ function createFocusEvent(domain, url, currTime, iconURL, callback) {
 		tabFocusEvents[domain].events.push(focusEvent);
 
 		chrome.storage.local.set({ tabFocusEvents: tabFocusEvents }, function () {
-			console.log("Tab gained focus for domain: ", domain, focusEvent);
+			console.log("tabFocusEvents set for: ", domain, focusEvent);
 			if (callback) callback();
 		});
 	});
@@ -239,6 +240,21 @@ function getDomainFromUrl(url) {
 		console.error("Invalid URL: ", error);
 		return null;
 	}
+}
+
+function isValidDomain(domain) {
+	return !(
+		domain === "extensions" ||
+		domain === null ||
+		domain === "mlgpaokmkbpbhmdebjfajahjfbefbkog"
+	);
+}
+
+function isValidUrl(url) {
+	return !(
+		url.includes("chrome://") ||
+		url.includes("gcomkonnlehkbfdpfoooldgoidapikgn")
+	);
 }
 
 function logStorageContents() {
@@ -269,6 +285,8 @@ function logStorageContents() {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
+	console.log("Extension installed, remove storage contents...");
+	chrome.storage.local.clear();
 	console.log("Extension installed, logging storage contents...");
 	logStorageContents();
 });
