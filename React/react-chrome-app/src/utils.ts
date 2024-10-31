@@ -73,7 +73,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "maps.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ajax.googleapis.com",
@@ -97,11 +97,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "support.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "plus.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "en.wikipedia.org",
@@ -121,7 +121,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "pinterest.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "goo.gl",
@@ -161,7 +161,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "itunes.apple.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "secure.gravatar.com",
@@ -205,7 +205,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "sites.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ec.europa.eu",
@@ -245,7 +245,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "forms.gle",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "code.jquery.com",
@@ -325,11 +325,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "support.microsoft.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "meetup.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "twitch.tv",
@@ -365,11 +365,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "web.archive.org",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "gmail.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "eur-lex.europa.eu",
@@ -401,7 +401,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "adobe.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ad.doubleclick.net",
@@ -461,7 +461,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "tools.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "t.co",
@@ -505,7 +505,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "opera.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "tumblr.com",
@@ -521,11 +521,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "wa.me",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "i.ytimg.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "techcrunch.com",
@@ -613,7 +613,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "google.co.uk",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "sciencedirect.com",
@@ -661,7 +661,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "docs.microsoft.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "greenpeace.org",
@@ -725,7 +725,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "blogger.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "statista.com",
@@ -945,7 +945,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "googleads.g.doubleclick.net",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "developer.apple.com",
@@ -977,11 +977,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "mailchi.mp",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "polyfill.io",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "doi.org",
@@ -1073,7 +1073,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "walmart.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "cbsnews.com",
@@ -1125,7 +1125,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "bitly.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "mn.gov",
@@ -1237,7 +1237,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "about.me",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "lh4.googleusercontent.com",
@@ -1317,7 +1317,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "raw.githubusercontent.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "iso.org",
@@ -1365,7 +1365,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "thingiverse.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "help.instagram.com",
@@ -1405,11 +1405,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "itunes.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "cdn.shopify.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "evernote.com",
@@ -1625,7 +1625,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "npmjs.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "usnews.com",
@@ -1633,11 +1633,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "brendangregg.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "crunchbase.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "get.adobe.com",
@@ -1681,7 +1681,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "brainstormforce.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "w3c.github.io",
@@ -1757,7 +1757,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "marketingplatform.google.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "google.ca",
@@ -1769,7 +1769,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "business.facebook.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "entrepreneur.com",
@@ -1905,7 +1905,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "airtable.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "popsci.com",
@@ -1961,7 +1961,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "xing.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "politico.com",
@@ -2069,7 +2069,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "amazon.it",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "northjersey.com",
@@ -2089,7 +2089,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "i.pinimg.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "hhs.gov",
@@ -2141,7 +2141,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "mssg.me",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "fr.wikipedia.org",
@@ -2261,7 +2261,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "ahrefs.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "discordapp.com",
@@ -2293,7 +2293,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "cisco.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "nielsen.com",
@@ -2357,7 +2357,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "pubads.g.doubleclick.net",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "dl.dropboxusercontent.com",
@@ -2413,11 +2413,11 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "nvidia.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "fitbit.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "prezi.com",
@@ -2481,7 +2481,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "iubenda.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "feeds.feedburner.com",
@@ -2553,7 +2553,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "donorbox.org",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "online.wsj.com",
@@ -2569,7 +2569,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "public.tableau.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "buzzfeednews.com",
@@ -2581,7 +2581,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "miro.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "scientificamerican.com",
@@ -2617,7 +2617,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "drupal.org",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "validator.w3.org",
@@ -2681,7 +2681,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "privacyshield.gov",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "advancedformintegration.com",
@@ -2721,7 +2721,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "themeforest.net",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "nngroup.com",
@@ -2833,7 +2833,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "indiegogo.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "baidu.com",
@@ -2877,7 +2877,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "thegrommet.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "technologyreview.com",
@@ -3021,7 +3021,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "ubuntu.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "prweb.com",
@@ -3029,7 +3029,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "bleepingcomputer.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "universal-music.co.jp",
@@ -3105,7 +3105,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "verizon.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "smashingmagazine.com",
@@ -3249,7 +3249,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "coinbase.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ohchr.org",
@@ -3393,7 +3393,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "tn.b4closing.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "hub.docker.com",
@@ -3405,7 +3405,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "reecase.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "legislation.gov.uk",
@@ -3445,7 +3445,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "google.pl",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "app.box.com",
@@ -3513,7 +3513,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "yt.be",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ivycityco.com",
@@ -3521,7 +3521,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "bocpainters.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "technorati.com",
@@ -3541,7 +3541,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "instapaper.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "bestcinemark.com",
@@ -3549,7 +3549,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "jemi.so",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "streetfilms.org",
@@ -3577,7 +3577,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "telegra.ph",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "jstor.org",
@@ -3585,7 +3585,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "patchstorage.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "cdn.ampproject.org",
@@ -3609,7 +3609,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "gs.statcounter.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "ti.nutrapia.com",
@@ -3741,7 +3741,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "ib.adnxs.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "madnessmyfamily.com",
@@ -3793,7 +3793,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "binance.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "intel.com",
@@ -3857,7 +3857,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "icgiyimkapinda.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "atlassian.com",
@@ -4001,7 +4001,7 @@ export const getAllCategories = () => {
 		},
 		{
 			Domain: "houzz.com",
-			Category: "Productivity.",
+			Category: "Productivity",
 		},
 		{
 			Domain: "gutenberg.org",

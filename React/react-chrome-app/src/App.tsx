@@ -159,7 +159,8 @@ function App() {
 					}}
 					onClick={() =>
 						chrome.tabs.create(
-							{ url: chrome.runtime.getURL("localhostTab.html") } // This opens NewFile.html in a new tab
+							{ url: chrome.runtime.getURL("js/redirect.html") } // This opens NewFile.html in a new tab
+							// Jonathan's tab: localhostTab.html
 						)
 					}
 				>
