@@ -237,7 +237,6 @@ function getDomainFromUrl(url) {
 		const urlObj = new URL(url); // Use the URL constructor to parse
 		return urlObj.hostname;
 	} catch (error) {
-		console.error("Invalid URL: ", error);
 		return null;
 	}
 }
