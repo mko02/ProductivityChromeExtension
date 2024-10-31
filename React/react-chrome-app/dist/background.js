@@ -284,8 +284,6 @@ function logStorageContents() {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
-	console.log("Extension installed, remove storage contents...");
-	chrome.storage.local.clear();
 	console.log("Extension installed, logging storage contents...");
 	logStorageContents();
 });
