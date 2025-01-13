@@ -23,6 +23,10 @@ function Redirect() {
 		[key: string]: any;
 	}>({});
 
+	const [domainTimeSession, setDomainTimeSession] = useState<{
+		[key: string]: any;
+	}>({});
+
 	useEffect(() => {
 		chrome.storage.local.get(null, (data) => {
 			var tabFocusEvents = data?.tabFocusEvents;
@@ -32,6 +36,7 @@ function Redirect() {
 				var events = tabFocusEvents[domain]["events"];
 				var totalActiveTime = 0;
 				var prevTimeStamp = null as Date | null;
+				var timeSession = [] as any;
 
 				events.forEach((event: any) => {
 					var timeStamp = new Date(event["timeStamp"]);
@@ -42,10 +47,24 @@ function Redirect() {
 						if (duration > 0) {
 							totalActiveTime += duration;
 						}
+
+						// add prevTimeStamp, current timeStamp, and duration to domainTimeSession
+						timeSession.push({
+							prevTimeStamp: prevTimeStamp,
+							currentTimeStamp: timeStamp,
+							duration: duration,
+						});
+
 						prevTimeStamp = null as Date | null;
 					}
 					prevTimeStamp = timeStamp;
 				});
+
+				// add timeSession to domainTimeSession
+				setDomainTimeSession((prevState) => ({
+					...prevState,
+					[domain]: timeSession,
+				}));
 
 				var iconUrl = tabFocusEvents[domain]["icon"];
 
@@ -74,8 +93,6 @@ function Redirect() {
 	}, [domainCategories]);
 
 	function findCategory(domain: string) {
-		console.log("finding category for domain: ", domain);
-		console.log("domainCategories: ", domainCategories);
 		const result = domainCategories.find((item) => item.Domain === domain);
 		return result ? result.Category : "Uncategorized";
 	}
@@ -89,6 +106,22 @@ function Redirect() {
 			};
 		});
 		return data;
+	}
+
+	function displayDomainTimeSession() {
+		// for each item in domainTimeSession
+		return Object.keys(domainTimeSession).map(
+			(domain) => (
+				console.log(domainTimeSession[domain]),
+				(
+					<div key={domain}>
+						<h2> {domain} </h2>
+
+						{/* for each time session in domainTimeSession */}
+					</div>
+				)
+			)
+		);
 	}
 
 	return (
@@ -128,6 +161,10 @@ function Redirect() {
 				width={400}
 				height={200}
 			/>
+
+			{/* Display the all domain with time session */}
+			<h1> Domain Time Session </h1>
+			{displayDomainTimeSession()}
 		</div>
 	);
 }
